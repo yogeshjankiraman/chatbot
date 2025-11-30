@@ -21,38 +21,65 @@ This guide will help you deploy your ChatBot AI application to Render.
    - **Start Command**: `cd chatBot-ai/server && npm start`
    - **Plan**: Free (or choose a paid plan)
 
-5. Add Environment Variables:
-   - `MONGO_URI`: Your MongoDB connection string
-     - Example: `mongodb+srv://username:password@cluster.mongodb.net/chatbot?retryWrites=true&w=majority`
-   - `JWT_SECRET`: A random secret string for JWT tokens
-     - Example: Generate one using: `openssl rand -base64 32`
-   - `GEMINI_API_KEY`: Your Google Gemini API key
-     - Get it from: https://makersuite.google.com/app/apikey
-   - `NODE_ENV`: `production`
-   - `FRONTEND_URL`: Will be set automatically after frontend deployment (or set manually to your frontend URL)
-   - `PORT`: Leave this - Render will set it automatically
+5. **Add Environment Variables**
 
-6. Click **"Create Web Service"**
+   Scroll down to **Environment Variables** and add these one by one:
 
-7. Wait for deployment to complete and note the service URL (e.g., `https://chatbot-api.onrender.com`)
+   🔹 **MONGO_URI**
+   - Your MongoDB connection string
+   - Example: `mongodb+srv://username:password@cluster.mongodb.net/chatbot?retryWrites=true&w=majority`
+
+   🔹 **JWT_SECRET**
+   - Any random secret string
+   - Example: `yogesh_super_secret_123`
+
+   🔹 **GEMINI_API_KEY**
+   - Your Gemini API key
+   - Get it from: https://makersuite.google.com/app/apikey
+
+   🔹 **NODE_ENV**
+   - Value: `production`
+
+   🔹 **FRONTEND_URL**
+   - 👇 (Add this after frontend is deployed)
+   - For now leave empty
+
+6. **Click Deploy Web Service**
+
+   Bottom-right → **Deploy Web Service**
+
+7. Render will now:
+   - ✔ Install dependencies
+   - ✔ Start backend
+   - ✔ Give you a LIVE API URL like: `https://chatbot-backend-xxxxx.onrender.com`
+
+8. **Note your backend URL** - You'll need this for the frontend deployment!
 
 ## Step 2: Deploy Frontend (React Client)
 
 1. In your Render dashboard, click **"New +"** and select **"Static Site"**
-2. Connect the same GitHub repository
+2. Connect the same GitHub repository: `yogeshjankiraman/chatbot`
 3. Configure the service:
    - **Name**: `chatbot-client` (or any name you prefer)
    - **Build Command**: `cd chatBot-ai/client && npm install && npm run build`
    - **Publish Directory**: `chatBot-ai/client/build`
+   - **Plan**: Free (or choose a paid plan)
 
-4. Add Environment Variable:
-   - `REACT_APP_API_URL`: Your backend service URL from Step 1
-     - Example: `https://chatbot-api.onrender.com`
-     - **Important**: Don't include a trailing slash
+4. **Add Environment Variable:**
 
-5. Click **"Create Static Site"**
+   🔹 **REACT_APP_API_URL**
+   - Your backend service URL from Step 1
+   - Example: `https://chatbot-backend-xxxxx.onrender.com`
+   - **Important**: Don't include a trailing slash
 
-6. Wait for deployment to complete
+5. **Click Create Static Site**
+
+6. Wait for deployment to complete and note your frontend URL
+
+7. **Update Backend FRONTEND_URL:**
+   - Go back to your backend service settings
+   - Update the `FRONTEND_URL` environment variable with your frontend URL
+   - This allows CORS to work properly
 
 ## Step 3: Update CORS Settings (if needed)
 
