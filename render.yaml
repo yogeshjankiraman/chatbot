@@ -1,0 +1,42 @@
+services:
+  # Backend API Service
+  - type: web
+    name: chatbot-api
+    env: node
+    plan: free
+    buildCommand: cd chatBot-ai/server && npm install
+    startCommand: cd chatBot-ai/server && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: FRONTEND_URL
+        fromService:
+          type: web
+          name: chatbot-client
+          property: host
+      - key: PORT
+        fromService:
+          type: web
+          name: chatbot-api
+          property: port
+
+  # Frontend Static Site
+  - type: web
+    name: chatbot-client
+    env: static
+    plan: free
+    buildCommand: cd chatBot-ai/client && npm install && npm run build
+    staticPublishPath: chatBot-ai/client/build
+    envVars:
+      - key: REACT_APP_API_URL
+        fromService:
+          type: web
+          name: chatbot-api
+          property: host
+
